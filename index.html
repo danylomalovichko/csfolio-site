@@ -173,10 +173,11 @@
       <div class="phone">
         <img class="frame" src="mockup.png" alt="" aria-hidden="true">
         <div class="screen">
-          <!-- Silent, looping, inline: autoplays on desktop and iOS alike.
-               The screenshot is the poster, so anyone with autoplay blocked
-               or a slow connection still sees the app immediately. -->
-          <video src="demo.mp4" poster="screenshot.png" autoplay loop muted playsinline
+          <!-- Silent, inline, autoplaying. The poster is the video's own first
+               frame, so there's no visible swap when playback starts. Looping
+               is driven in script so each pass can hold on frame one for a
+               beat instead of cutting straight into the next screen. -->
+          <video id="demo" src="demo.mp4" poster="poster.png" autoplay muted playsinline
                  aria-label="CS2Folio in use: browsing a portfolio, comparing prices across markets, and viewing the history chart"></video>
         </div>
       </div>
@@ -230,6 +231,29 @@
     <div class="fine">CS2Folio is not affiliated with or endorsed by Valve Corporation or any marketplace. Counter-Strike, CS2, and related item names are trademarks or copyrights of Valve Corporation. Price data is sourced from third-party marketplaces. © 2026 Danylo Malovichko.</div>
   </footer>
 </div>
+
+<script>
+  // Hold on the opening frame for a beat before each pass, so the loop reads
+  // as "here's the portfolio, now watch" rather than cutting straight into a
+  // menu. Native `loop` is off; we restart manually after the pause.
+  (function () {
+    var v = document.getElementById('demo');
+    if (!v) return;
+    var HOLD_MS = 1000;
+
+    function playAfterHold() {
+      v.pause();
+      v.currentTime = 0;
+      setTimeout(function () {
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {}); // autoplay blocked: poster stays
+      }, HOLD_MS);
+    }
+
+    v.addEventListener('loadeddata', playAfterHold, { once: true });
+    v.addEventListener('ended', playAfterHold);
+  })();
+</script>
 
 </body>
 </html>
