@@ -72,8 +72,16 @@
     font-size: 17px;
     transition: transform .15s ease, box-shadow .15s ease;
     box-shadow: 0 6px 28px rgba(52, 199, 89, .18);
+    /* Promote to its own layer up front. Without this, Firefox re-rasterises
+       the text on hover and the label visibly jitters by a pixel. */
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
   }
-  .store-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 34px rgba(52, 199, 89, .3); }
+  .store-btn:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 10px 34px rgba(52, 199, 89, .3);
+  }
   .store-btn svg { width: 22px; height: 22px; }
   .store-btn small { display: block; font-size: 11px; font-weight: 600; opacity: .65; line-height: 1.1; }
   .store-btn .lines { text-align: left; line-height: 1.15; }
@@ -114,6 +122,13 @@
     height: 100%;
     object-fit: cover;
     object-position: top;
+  }
+  /* The clip is downscaled to fit the frame. Chrome filters that smoothly;
+     Firefox is softer unless the video gets its own compositing layer. */
+  .phone .screen video {
+    transform: translateZ(0);
+    will-change: transform;
+    image-rendering: auto;
   }
 
   .features {
