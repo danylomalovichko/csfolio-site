@@ -79,14 +79,40 @@
   .store-btn .lines { text-align: left; line-height: 1.15; }
   .free-note { margin-top: 14px; font-size: 13px; color: var(--muted); }
 
-  .hero-shot { flex: 0 1 310px; margin: 0 auto; }
-  .hero-shot img {
+  /* iPhone frame. The inner screen offsets are measured from mockup.png
+     (1022×2082, screen at 52,46 sized 918×1990) and expressed as
+     percentages so the whole thing scales with the container. */
+  .hero-shot { flex: 0 1 330px; margin: 0 auto; }
+  .phone {
+    position: relative;
     width: 100%;
-    max-width: 310px;
+    max-width: 330px;
+    aspect-ratio: 1022 / 2082;
+    margin: 0 auto;
+  }
+  .phone .frame {
+    position: relative;
+    z-index: 1;
     display: block;
-    border-radius: 32px;
-    border: 1px solid var(--border);
-    box-shadow: 0 30px 80px rgba(0,0,0,.55);
+    width: 100%;
+    height: 100%;
+  }
+  .phone .screen {
+    position: absolute;
+    z-index: 2;
+    left: 5.088%;
+    top: 2.209%;
+    width: 89.824%;
+    height: 95.581%;
+    border-radius: 13.725% / 6.332%;
+    overflow: hidden;
+  }
+  .phone .screen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
   }
 
   .features {
@@ -104,6 +130,10 @@
   .card .icon { font-size: 22px; }
   .card h3 { margin: 10px 0 6px; font-size: 17px; letter-spacing: -0.2px; }
   .card p { font-size: 14.5px; color: var(--muted); }
+  /* Seven features would leave an orphan on the last row — the closing
+     card spans the full width instead, as a deliberate sign-off. */
+  .card.wide { grid-column: 1 / -1; }
+  .card.wide p { max-width: 68ch; }
 
   .cta {
     text-align: center;
@@ -141,7 +171,12 @@
       <p class="free-note">Free · iPhone · iOS 18+</p>
     </div>
     <div class="hero-shot">
-      <img src="screenshot.png" alt="CS2Folio portfolio screen showing invested value, current value, and per-item profit and loss" width="310" height="672">
+      <div class="phone">
+        <img class="frame" src="mockup.png" alt="" aria-hidden="true">
+        <div class="screen">
+          <img src="screenshot.png" alt="CS2Folio portfolio screen showing invested value, current value, and per-item profit and loss">
+        </div>
+      </div>
     </div>
   </section>
 
@@ -176,7 +211,7 @@
       <h3>Storage Units</h3>
       <p>Mirror your in-game storage units and keep case stockpiles organized without opening Steam.</p>
     </div>
-    <div class="card">
+    <div class="card wide">
       <div class="icon">🔒</div>
       <h3>Private by design</h3>
       <p>No account, no sign-in. Your portfolio lives on your device and nowhere else. One optional purchase removes ads — that's the entire business model.</p>
