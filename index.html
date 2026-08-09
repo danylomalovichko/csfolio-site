@@ -270,5 +270,11 @@
   })();
 </script>
 
+<!-- Cloudflare Web Analytics — cookieless, no fingerprinting, so it needs no
+     consent banner. Manual snippet because the site is served by GitHub Pages
+     with DNS-only records, so Cloudflare can't auto-inject it. -->
+<script defer type="module" src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon='{"token": "83d3ba8447b741c3a0a28e359b4c3b7f"}'></script>
+
 </body>
 </html>
